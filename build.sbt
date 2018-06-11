@@ -2,66 +2,60 @@
 // Projects
 // *****************************************************************************
 
-lazy val `scala-js-deeplearnjs` =
-  project
-    .in(file("."))
-    .enablePlugins(AutomateHeaderPlugin, GitVersioning, GitBranchPrompt, ScalaJSPlugin, ScalaJSBundlerPlugin)
-    .settings(settings)
-    .settings(
-      libraryDependencies ++= Seq(
-        library.scalajsDom,
-        library.scalaCheck % Test,
-        library.scalaTest  % Test
-      ),
-      npmDependencies in Test += "deeplearn" -> "0.4.2"
-    )
+//lazy val `scala-js-deeplearnjs` =
+//  project
+//    .in(file("."))
+//    .enablePlugins(AutomateHeaderPlugin, GitVersioning, GitBranchPrompt, ScalaJSPlugin, ScalaJSBundlerPlugin)
+//    .settings(settings)
+//    .settings(
+//      libraryDependencies ++= Seq(
+//        library.scalajsDom,
+//        library.scalaCheck % Test,
+//        library.scalaTest  % Test
+//      ),
+//      npmDependencies in Test += "deeplearn" -> "0.4.2"
+//    )
 
 lazy val `scalajs-tfjs-core` =
   project
     .in(file("tfjs-core"))
-    .enablePlugins(AutomateHeaderPlugin, GitVersioning, GitBranchPrompt, ScalaJSPlugin, ScalaJSBundlerPlugin)
+    .enablePlugins(AutomateHeaderPlugin, GitVersioning, GitBranchPrompt, ScalaJSPlugin)
     .settings(settings)
     .settings(
       libraryDependencies ++= Seq(
-        library.scalajsDom,
-        library.scalaCheck % Test,
-        library.scalaTest  % Test
-      ),
-      npmDependencies in Test += "@tensorflow/tfjs-core" -> "0.11.0"
+        "org.scala-js" %%% "scalajs-dom" % "0.9.5"
+      )
     )
 
 lazy val `scalajs-tfjs-layers` =
   project
     .in(file("tfjs-layers"))
-    .enablePlugins(AutomateHeaderPlugin, GitVersioning, GitBranchPrompt, ScalaJSPlugin, ScalaJSBundlerPlugin)
+    .enablePlugins(AutomateHeaderPlugin, GitVersioning, GitBranchPrompt, ScalaJSPlugin)
     .settings(settings)
     .settings(
       libraryDependencies ++= Seq(
-        library.scalajsDom,
-        library.scalaCheck % Test,
-        library.scalaTest  % Test
-      ),
-      npmDependencies in Test += "tfjs-layers" -> "0.6.1"
+        "org.scala-js" %%% "scalajs-dom" % "0.9.5"
+      )
     )
   .dependsOn(`scalajs-tfjs-core`)
 
-lazy val example =
-  project
-    .in(file("example"))
-    .enablePlugins(AutomateHeaderPlugin, ScalaJSPlugin, ScalaJSBundlerPlugin)
-    .settings(settings)
-    .settings(
-      libraryDependencies ++= Seq(
-        library.scalaAsync,
-        library.scalajsDom,
-      ),
-      npmDependencies in Compile += "deeplearn" -> "0.4.2",
-      npmDependencies in Compile += "@tensorflow/tfjs-core" -> "0.11.0",
-      scalaJSUseMainModuleInitializer := true,
-      mainClass in Compile := Some("example.Example")
-    )
-    .dependsOn(`scala-js-deeplearnjs`)
-    .dependsOn(`scalajs-tfjs-core`)
+//lazy val example =
+//  project
+//    .in(file("example"))
+//    .enablePlugins(AutomateHeaderPlugin, ScalaJSPlugin, ScalaJSBundlerPlugin)
+//    .settings(settings)
+//    .settings(
+//      libraryDependencies ++= Seq(
+//        library.scalaAsync,
+//        library.scalajsDom,
+//      ),
+//      npmDependencies in Compile += "deeplearn" -> "0.4.2",
+//      npmDependencies in Compile += "@tensorflow/tfjs-core" -> "0.11.0",
+//      scalaJSUseMainModuleInitializer := true,
+//      mainClass in Compile := Some("example.Example")
+//    )
+//    .dependsOn(`scala-js-deeplearnjs`)
+//    .dependsOn(`scalajs-tfjs-core`)
 
 
 // *****************************************************************************
@@ -77,9 +71,6 @@ lazy val library =
       val scalajsDom = "0.9.3"
     }
     val scalaAsync = "org.scala-lang.modules" %% "scala-async" % Version.scalaAsync
-    val scalajsDom = "org.scala-js" %%%! "scalajs-dom" % Version.scalajsDom
-    val scalaCheck = "org.scalacheck" %% "scalacheck" % Version.scalaCheck
-    val scalaTest  = "org.scalatest"  %%%! "scalatest"  % Version.scalaTest
   }
 
 // *****************************************************************************
@@ -104,8 +95,7 @@ lazy val commonSettings =
       "-deprecation",
       "-language:_",
       "-target:jvm-1.8",
-      "-encoding", "UTF-8",
-      "-P:scalajs:sjsDefinedByDefault"
+      "-encoding", "UTF-8"
     ),
     unmanagedSourceDirectories.in(Compile) := Seq(scalaSource.in(Compile).value),
     unmanagedSourceDirectories.in(Test) := Seq(scalaSource.in(Test).value),
